@@ -17,6 +17,7 @@ export class PagesComponent implements OnInit {
   @ViewChild('navbar', { read: ViewContainerRef, static: true }) navbarContainer!: ViewContainerRef;
 
   introSrv: IntroService | null = null;
+  message: string | undefined;
 
   ngOnInit(): void {
     this.loadNavbarComponent();
@@ -60,7 +61,6 @@ export class PagesComponent implements OnInit {
   }
 
   sayHi(): void {
-    console.log(this.introSrv?.greetings, 'into service');
-    this.introSrv?.greetings(this.brand as string);
+    this.message = this.introSrv?.greetings(this.brand as string);
   }
 }

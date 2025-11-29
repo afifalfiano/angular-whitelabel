@@ -8,6 +8,6 @@ export class IntroService {
   constructor() { }
 
   greetings(brand: string): string {
-    return `Hello, Good morning everyone, I'm ${brand}`;
+    return `Hello, Good morning everyone, I'm ${brand} as a base`;
   }
 }

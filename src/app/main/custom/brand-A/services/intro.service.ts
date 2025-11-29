@@ -8,6 +8,6 @@ export class IntroService {
   constructor() { }
 
   greetings(brand: string): string {
-    return `Hello, I'm from ${brand}`;
+    return `Hello, I'm from ${brand} as a brand A`;
   }
 }
