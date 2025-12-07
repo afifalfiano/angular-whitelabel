@@ -1,66 +1,58 @@
-import { Component, inject, Injector, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { ActivatedRoute, RouterOutlet } from '@angular/router';
+import {
+  AfterViewInit,
+  Component,
+  inject,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 import { IntroService } from '@base/services/intro.service';
-import { registryConfig } from '@config/registry';
+import { DynamicImportService } from '@base/services/private/dynamic-import.service';
 
 @Component({
   selector: 'app-pages',
   imports: [RouterOutlet],
   templateUrl: './pages.component.html',
-  styleUrl: './pages.component.scss'
+  styleUrl: './pages.component.scss',
 })
-export class PagesComponent implements OnInit {
-  private readonly route = inject(ActivatedRoute);
-  private readonly injector = inject(Injector);
-  private brand = this.route.snapshot.paramMap.get('brand');
+export class PagesComponent implements AfterViewInit {
+  private readonly dynamicImportSrv = inject(DynamicImportService);
 
-  @ViewChild('navbar', { read: ViewContainerRef, static: true }) navbarContainer!: ViewContainerRef;
+  @ViewChild('navbar', { read: ViewContainerRef, static: true })
+  navbarContainer!: ViewContainerRef;
 
   introSrv: IntroService | null = null;
   message: string | undefined;
 
-  ngOnInit(): void {
+  async ngAfterViewInit(): Promise<void> {
     this.loadNavbarComponent();
     this.loadServices();
   }
 
   private async loadNavbarComponent() {
-    console.log(this.brand)
     try {
-      let component = registryConfig.base.components;
-      if (this.brand !== 'base') {
-        component  = registryConfig.custom[this.brand as keyof typeof registryConfig.custom]?.components || component;
-      }
-      const data = await (component as unknown as Record<string, () => Promise<any>>)['navbar']();
-      if (data) {
-        const { NavbarComponent } = data;
+      const component = await this.dynamicImportSrv.loadComponent('navbar');
+      if (component) {
         this.navbarContainer.clear();
-        this.navbarContainer.createComponent(NavbarComponent);
-      } else {
-        throw new Error('Navbar component not found in registry');
+        this.navbarContainer.createComponent(component);
       }
     } catch (error) {
-      console.error('Error load navbar component', error);
-      
-    } 
+      console.log(error);
+    }
   }
 
   private async loadServices() {
     try {
-      let services = registryConfig.base.services;
-      if (this.brand !== 'base') {
-        services  = registryConfig.custom[this.brand as keyof typeof registryConfig.custom]?.services || services;
-      }
-      const data = await (services as unknown as Record<string, () => Promise<any>>)['intro']();
-      if (data) {
-        this.introSrv = this.injector.get(data.IntroService);
+      const service = await this.dynamicImportSrv.loadService('intro');
+      if (service) {
+        this.introSrv = service;
       }
     } catch (error) {
-      console.error('Error load intro service', error);
+      console.log('error',error);
     }
   }
 
   sayHi(): void {
-    this.message = this.introSrv?.greetings(this.brand as string);
+    this.message = this.introSrv?.greetings(this.dynamicImportSrv.getBrand());
   }
 }
