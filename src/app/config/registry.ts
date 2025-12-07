@@ -1,9 +1,9 @@
 import { NavbarComponent } from '@base/components/navbar/navbar.component';
 
-export const registryConfig: {
+interface RegisterConfig {
     base: {
         components: {
-            'navbar'?: () => Promise<{ NavbarComponent: NavbarComponent }>;
+            'navbar'?: () => Promise<{ NavbarComponent: any }>;
         };
         services: {
             'intro'?: () => Promise<{ IntroService: any }>;
@@ -12,14 +12,16 @@ export const registryConfig: {
     custom: {
         [brand: string]: {
             components: {
-                'navbar'?: () => Promise<{ NavbarComponent: NavbarComponent }>;
+                'navbar'?: () => Promise<{ NavbarComponent: any }>;
             };
             services: {
                 'intro'?: () => Promise<{ IntroService: any }>;
             };
         };
     }
-} = {
+}
+
+export const registryConfig: RegisterConfig  = {
    base: {
     'components': {
         'navbar': () => import('@base/components/navbar/navbar.component')

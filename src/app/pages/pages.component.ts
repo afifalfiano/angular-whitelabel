@@ -11,7 +11,6 @@ import { DynamicImportService } from '@base/services/private/dynamic-import.serv
 
 @Component({
   selector: 'app-pages',
-  imports: [RouterOutlet],
   templateUrl: './pages.component.html',
   styleUrl: './pages.component.scss',
 })
