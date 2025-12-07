@@ -5,7 +5,6 @@ import {
   ViewChild,
   ViewContainerRef,
 } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 import { IntroService } from '@base/services/intro.service';
 import { DynamicImportService } from '@base/services/private/dynamic-import.service';
 
@@ -21,7 +20,6 @@ export class PagesComponent implements AfterViewInit {
   navbarContainer!: ViewContainerRef;
 
   introSrv: IntroService | null = null;
-  message: string | undefined;
 
   async ngAfterViewInit(): Promise<void> {
     this.loadNavbarComponent();
@@ -52,6 +50,7 @@ export class PagesComponent implements AfterViewInit {
   }
 
   sayHi(): void {
-    this.message = this.introSrv?.greetings(this.dynamicImportSrv.getBrand());
+    const message = this.introSrv?.greetings(this.dynamicImportSrv.getBrand());
+    console.info(message);
   }
 }
