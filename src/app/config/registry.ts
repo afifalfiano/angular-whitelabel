@@ -1,25 +1,5 @@
 import { NavbarComponent } from '@base/components/navbar/navbar.component';
-
-interface RegisterConfig {
-    base: {
-        components: {
-            'navbar'?: () => Promise<{ NavbarComponent: any }>;
-        };
-        services: {
-            'intro'?: () => Promise<{ IntroService: any }>;
-        };
-    };
-    custom: {
-        [brand: string]: {
-            components: {
-                'navbar'?: () => Promise<{ NavbarComponent: any }>;
-            };
-            services: {
-                'intro'?: () => Promise<{ IntroService: any }>;
-            };
-        };
-    }
-}
+import { RegisterConfig } from 'app/models/config.interface';
 
 export const registryConfig: RegisterConfig  = {
    base: {
