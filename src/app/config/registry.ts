@@ -8,11 +8,11 @@ export const registryConfig: RegisterConfig  = {
     }
    },
    custom: {
-    'brand-A': {
-        'components': {
-        },
-        'services': {
-        }
-    }
+    // 'brand-A': {
+    //     'components': {
+    //     },
+    //     'services': {
+    //     }
+    // }
    },
 }
