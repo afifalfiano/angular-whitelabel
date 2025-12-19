@@ -1,6 +1,34 @@
 
 <!-- NAVBAR -->
-<ng-template #navbar></ng-template>
+<nav class="fixed top-0 left-0 w-full bg-white shadow-md z-50 transition-all">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <h1 class="text-2xl font-bold text-blue-600">Company Name</h1>
+
+    <ul class="hidden md:flex gap-8 text-gray-700 font-medium">
+      <li class="hover:text-blue-600 cursor-pointer" (click)="scrollTo('hero')">
+        Home
+      </li>
+      <li
+        class="hover:text-blue-600 cursor-pointer"
+        (click)="scrollTo('about')"
+      >
+        About
+      </li>
+      <li
+        class="hover:text-blue-600 cursor-pointer"
+        (click)="scrollTo('services')"
+      >
+        Services
+      </li>
+      <li
+        class="hover:text-blue-600 cursor-pointer"
+        (click)="scrollTo('contact')"
+      >
+        Contact Us
+      </li>
+    </ul>
+  </div>
+</nav>
 <!-- END NAVBAR -->
 
 <!-- HERO -->
@@ -23,7 +51,6 @@
       <button
         class="border border-gray-400 px-6 py-3 rounded-xl text-lg font-semibold hover:bg-gray-100 transition"
         type="button"
-        (click)="sayHi()"
       >
         Contact Sales
       </button>
