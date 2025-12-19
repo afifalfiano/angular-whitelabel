@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
-import { Brands } from '@config/events';
+import { Brands } from '@config/brands';
 
 export const isValidBrandGuard: CanActivateFn = (route, state) => {
   const brands = Brands; // Example valid brands
