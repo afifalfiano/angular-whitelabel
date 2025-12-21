@@ -1,10 +1,4 @@
-import {
-  Component,
-  inject,
-  Injectable,
-  Injector,
-  Type,
-} from '@angular/core';
+import { Component, inject, Injectable, Injector, Type } from '@angular/core';
 import { Router } from '@angular/router';
 import { registryConfig } from '@config/registry';
 
@@ -24,9 +18,7 @@ export class DynamicImportService {
   /**
    * Load ANY dynamic component from registry
    */
-  async loadComponent(
-    componentKey: string
-  ): Promise<Type<Component>> {
+  async loadComponent(componentKey: string): Promise<Type<Component>> {
     try {
       let components = registryConfig.base.components;
 
@@ -37,12 +29,16 @@ export class DynamicImportService {
           ]?.components || components;
       }
 
-      const loader = (components as Record<string, () => Promise<any>>)[
+      let loader = (components as Record<string, () => Promise<any>>)[
         componentKey
       ];
 
       if (!loader) {
-        throw new Error(`Component loader for "${componentKey}" not found`);
+        components = registryConfig.base.components; // fallback to base
+        loader = (components as Record<string, () => Promise<any>>)[
+          componentKey
+        ]; // try to get loader from base
+        console.error(`Component loader for "${componentKey}" not found`);
       }
 
       const loadedModule = await loader();
@@ -59,7 +55,6 @@ export class DynamicImportService {
       const component = loadedModule[componentName];
 
       return Promise.resolve(component);
-
     } catch (error) {
       console.error(`Error loading component "${componentKey}"`, error);
       return Promise.reject(null);
@@ -80,12 +75,12 @@ export class DynamicImportService {
           ]?.services || services;
       }
 
-      const loader = (services as Record<string, () => Promise<any>>)[
-        serviceKey
-      ];
+      let loader = (services as Record<string, () => Promise<any>>)[serviceKey];
 
       if (!loader) {
-        throw new Error(`Service loader for "${serviceKey}" not found`);
+        services = registryConfig.base.services; // fallback to base
+        loader = (services as Record<string, () => Promise<any>>)[serviceKey]; // try to get loader from base
+        console.error(`Service loader for "${serviceKey}" not found`);
       }
 
       const loadedModule = await loader();
